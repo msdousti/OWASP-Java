@@ -2,6 +2,8 @@
 libs/*
 out/*
 target/*
+classes/*
+
 # Compiled class file
 *.class
 

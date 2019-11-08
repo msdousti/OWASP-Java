@@ -48,7 +48,7 @@ sc start mysql
 To check whether the installation was successful, issue the command `mysql -uroot`: 
 ![MySQL console](extra/images/mysql.png)
 
-Tyep `exit`, and press `Enter` to get out of MySQL console.
+Type `exit`, and press `Enter` to get out of MySQL console.
 
 We need to create our sample database, and populate it with sample data. The SQL file is called [testdb.sql](extra/testdb.sql). Download it to MySQL `bin` directory, and from there execute the following command:
 ```
@@ -99,6 +99,7 @@ You have to set the following properties (sorted alphabetically):
 * `DatabaseName` – The name of the database you want to connect to. In this case, `testdb`.
 * `Password`: The password for the specified user. Here, it's `123456`.
 * `ServerName`: The location of the MySQL server. In this case `localhost`.
+* `URL`: The JDBC URL to be used. Here, set it to `jdbc:mysql://:3306/testdb`.
 * `User`: The username for connecting to the database. Here, it's `root`.
 
 Hit the `Finish` button. Click the newly created connection pool. In the `General` tab, click the `Ping` button. If everything goes right, you should see the following:
@@ -108,12 +109,13 @@ Hit the `Finish` button. Click the newly created connection pool. In the `Genera
 Similarly, create another connection pool called `MySQL_readonly_Pool`. The Step 1 is the same as the previous connection pool. For Step 2, set the `Additional Properties` as follows:
 
 * `allowPublicKeyRetrieval: true`.
-* `Password:     MyVeryLongPassphrase`.
-* `ServerName:   localhost`.
-* `ServerName:   localhost`.
-* `User:         readonly`.
+* `Password:                MyVeryLongPassphrase`.
+* `ServerName:              localhost`.
+* `ServerName:              localhost`.
+* `URL:                     jdbc:mysql://:3306/testdb`.
+* `User:                    readonly`.
 
-Finally, we need to set up the JDBC resources. Go to `Resources → JDBC → JDBC Resources`, and click `New`. Fill in the form as follows:
+We need to set up the JDBC resources. Go to `Resources → JDBC → JDBC Resources`, and click `New`. Fill in the form as follows:
 
 * `JNDI Name: jdbc/MySQL_root_DataSource`
 * `Connection Pool: MySQL_root_Pool`
@@ -124,4 +126,67 @@ Similarly, do this for the second connection pool:
 * `JNDI Name: jdbc/MySQL_readonly_DataSource`
 * `Connection Pool: MySQL_readonly_Pool`
 
+Finally, issue the following command to stop the Payara Server. 
+```
+asadmin stop-domain
+```
+This is done since IntelliJ IDEA automatically starts the server.
+
 #### IntelliJ IDEA
+Open the project in IntelliJ IDEA. It notifies you that `Web framework is detected`:
+
+![Frameworks Detected](extra/images/intellij-framework-detected.png)
+
+Click `Configure` to open the `Setup Frameworks` window. Then, simply click OK:
+
+![Setup Frameworks](extra/images/intellij-setup-frameworks.png)
+
+Select `Run → Edit Configurations...`. Open  `Templates → GlassFish Server → Local`. Click `Configure`:
+
+![Edit GlassFish template](extra/images/intellij-glassfish-local.png)
+
+Select `GlassFish Home`. If selected correctly, IntelliJ will automatically detect the `GlassFish Version`:
+
+![GlassFish Home](extra/images/intellij-glassfish-home.png)
+
+Click `OK`. From the `Server Domain` drop-down box, select `domain1`.
+
+![Server Domain](extra/images/intellij-domain1.png)
+
+Click `Apply`. You now have a proper GlassFish template which you can use across multiple projects. But for each project, you need to configure the "artifact" to be deploed. To this end, click the `+` at the top-left, and select `GlassFish Server → Local`:
+
+![New Configuration](extra/images/intellij-new-config.png)
+
+In the bottom, IntelliJ warns you that `No artifacts configured`. Simply click on the `Fix` button.
+
+![No artifacts configured](extra/images/intellij-no-artifacts.png)
+
+Then, in the `Artifacts` window, click on the `+` sign, and choose `Web Application Exploded → From Modules`
+
+![New Artifact](extra/images/intellij-artifacts.png)
+
+Pick the only available module, i.e., `OWASP-JAVA`, and click OK.
+
+![Select modules](extra/images/intellij-select-modules.png)
+
+Click OK to return to the `Run/Debug Configurations`. At the bottom, you'll see one more warning: `Debug settings are invalid or not suitable for local debugging`. Click the `Fix` button, and IntelliJ will take care of that for you.
+
+![Fix debug settings](extra/images/intellij-debug-settings.png)
+
+You can now run the project. IntelliJ automatically opens your default browser, and navigates to `http://localhost:8080/OWASP_Java_war_exploded/`:
+
+![Login Page](extra/images/browser-1.png)
+
+Enter the following credentials:
+* Username: `kambiz`
+* Password: `1`
+
+If everything works correctly, you'll be redirected to the user home page:
+
+![Home Page](extra/images/browser-2.png)
+
+Otherwise, you might need to look at GlassFish logs, as reported by IntelliJ, to see what went wrong.
+
+![GlassFish logs](extra/images/intellij-glassfish-log.png)
+
+By the way, I use the [Grep Console](https://plugins.jetbrains.com/plugin/7125-grep-console) plugin for analyzing logs easier.

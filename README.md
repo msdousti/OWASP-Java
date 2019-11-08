@@ -1,5 +1,7 @@
 # OWASP Java - Vulnerability Showcase
 
+![Serious warning](extra/images/Danger.png)
+
 A **seriously flawed** Java project for teaching [OWASP Top 10 - 2017](https://www.owasp.org/images/7/72/OWASP_Top_10-2017_%28en%29.pdf.pdf) concepts.
 
 ```

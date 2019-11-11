@@ -19,7 +19,7 @@ You'll need:
 * [JDK 11](https://www.oracle.com/javadownload). I used  version "11.0.5" 2019-10-15 LTS.
 * [Payara Server](https://www.payara.fish/software/downloads/). I used version Payara Server 5.193.1 Full.
 * [MySQL Community Server 8](https://dev.mysql.com/downloads/mysql/). I used MySQL Community Server 8.0.18.
-* [MySQL Connector/J 8](https://dev.mysql.com/downloads/connector/j/). I used ... "Platform Independent" version.
+* [MySQL Connector/J 8](https://dev.mysql.com/downloads/connector/j/). I used "Platform Independent," version 8.0.18.
 * [IntelliJ IDEA](https://www.jetbrains.com/idea/). Not a prerequisite per se, but it would be hard to work with the project without it. I used IntelliJ IDEA 2019.2.3.
 
 #### JDK 11
@@ -97,10 +97,11 @@ For Step 2, scroll down until you see the `Additional Properties`:
 
 You have to set the following properties (sorted alphabetically):
 
-* `allowPublicKeyRetrieval` – Whether the client is allowed to automatically request the public key from the server. Set to `true`.
+* `allowPublicKeyRetrieval` – Whether the client is allowed to automatically request the public key from the server. Set to `true`. (Not recommended in production environments)
 * `DatabaseName` – The name of the database you want to connect to. In this case, `testdb`.
 * `Password`: The password for the specified user. Here, it's `123456`.
 * `ServerName`: The location of the MySQL server. In this case `localhost`.
+* `sslMode`: Whether SSL is used for connecting to MySQL server. Set it to `DISABLED`. (Not recommended in production environments)
 * `URL`: The JDBC URL to be used. Here, set it to `jdbc:mysql://:3306/testdb`.
 * `User`: The username for connecting to the database. Here, it's `root`.
 
@@ -114,6 +115,7 @@ Similarly, create another connection pool called `MySQL_readonly_Pool`. The Step
 * `DatabaseName:            testdb`.
 * `Password:                MyVeryLongPassphrase`.
 * `ServerName:              localhost`.
+* `sslMode:                 DISABLED`.
 * `URL:                     jdbc:mysql://:3306/testdb`.
 * `User:                    readonly`.
 

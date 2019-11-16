@@ -102,7 +102,7 @@ You have to set the following properties (sorted alphabetically):
 * `Password`: The password for the specified user. Here, it's `123456`.
 * `ServerName`: The location of the MySQL server. In this case `localhost`.
 * `sslMode`: Whether SSL is used for connecting to MySQL server. Set it to `DISABLED`. (Not recommended in production environments)
-* `URL` and `Url`: The JDBC URL to be used. Here, set it to `jdbc:mysql://:3306/testdb`.
+* `URL` and `Url`: The JDBC URL to be used. Here, set it to `jdbc:mysql://localhost:3306/testdb`.
 * `User`: The username for connecting to the database. Here, it's `root`.
 
 Hit the `Finish` button. Click the newly created connection pool. In the `General` tab, click the `Ping` button. If everything goes right, you should see the following:
@@ -116,8 +116,8 @@ Similarly, create another connection pool called `MySQL_readonly_Pool`. The Step
 * `Password:                MyVeryLongPassphrase`.
 * `ServerName:              localhost`.
 * `sslMode:                 DISABLED`.
-* `URL:                     jdbc:mysql://:3306/testdb`.
-* `Url:                     jdbc:mysql://:3306/testdb`.
+* `URL:                     jdbc:mysql://localhost:3306/testdb`.
+* `Url:                     jdbc:mysql://localhost:3306/testdb`.
 * `User:                    readonly`.
 
 We need to set up the JDBC resources. Go to `Resources → JDBC → JDBC Resources`, and click `New`. Fill in the form as follows:

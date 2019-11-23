@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
                          HttpServletResponse response)
             throws IOException {
 
+        // FIXME: implement this kind of logging in a filter
         logger.info("Received request from " + request.getRemoteAddr());
 
         String userParam = request.getParameter("username");
@@ -48,6 +49,9 @@ public class LoginServlet extends HttpServlet {
             response.setContentType("text/html; charset=UTF-8");
 
             // NOTE: Internet Explorer, Chrome and Safari have a builtin "XSS filter" to prevent this.
+            //   Update: Newer versions of these browser are dropping support for this header:
+            //   * Edge: https://textslashplain.com/2018/11/06/an-update-on-the-edge-xss-filter/
+            //   * Chrome: https://www.chromium.org/developers/design-documents/xss-auditor
 
             // For IE, "X-XSS-Protection" must be enabled, as shown below:
             response.setHeader("X-XSS-Protection", "1; mode=block");
@@ -65,6 +69,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         //FIXME: OWASP A1:2017 - Injection
+        //   * See "LoginXServlet.java" for an implementation via "Prepared Statements"
         //FIXME: Use "LIMIT 1" at the end of query to improve performance
         String query = String.format("select * from users " +
                         "where username = '%s' " +
@@ -110,22 +115,24 @@ public class LoginServlet extends HttpServlet {
         //  Parameter "Remember me" is not observed
         //  Cookie security settings (httpOnly, secure, age, domain, path, same-site)
         //  For same-site, see: https://stackoverflow.com/a/43106260/459391
-        //      response.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=strict")
+        //      response.setHeader("Set-Cookie", "key=value; HttpOnly; Secure; SameSite=strict")
 
         //FIXME: OWASP A5:2017 - Broken Access Control
         //  Cookie used without any signature
+        //  Better yet: This info can be set in user's session at the server side
         Cookie uCookie = new Cookie("username", username);
         response.addCookie(uCookie);
 
         //FIXME: OWASP A5:2017 - Broken Access Control
         //  Cookie used without any signature
         //FIXME: OWASP A3:2017 - Sensitive Data Exposure
-        //  Password stored as plaintext on client-side
+        //  Password stored as plaintext on client-side. No usecase scenario needs this!
         Cookie pCookie = new Cookie("password", password);
         response.addCookie(pCookie);
 
         //FIXME: OWASP A5:2017 - Broken Access Control
         //  Cookie used without any signature
+        //  Better yet: This info can be set in user's session at the server side
         Cookie rCookie = new Cookie("role", role);
         response.addCookie(rCookie);
 

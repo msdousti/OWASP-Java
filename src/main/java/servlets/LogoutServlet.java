@@ -8,6 +8,8 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     private static final long serialVersionUID = -7529404061769958490L;
 
+    //FIXME: Currently, logout is vulnerable to CSRF attacks.
+    // See superlogout.com as an example
 
     @Override
     protected void doGet(HttpServletRequest request,
@@ -15,6 +17,7 @@ public class LogoutServlet extends HttpServlet {
             throws IOException {
 
         //FIXME: OWASP A2:2017 - Broken Authentication
+        // Cookies are not deleted. Call deleteCookies()
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect("index.jsp");

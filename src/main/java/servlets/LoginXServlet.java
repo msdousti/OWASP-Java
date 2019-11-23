@@ -15,6 +15,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+/*
+ * This servlet does nothing!
+ * It is only intended to show how one can use "Prepared Statements"
+ * instead of concatentating various parts of a statement
+ */
+
 @WebServlet("/loginx.do")
 public class LoginXServlet extends HttpServlet {
     private static final long serialVersionUID = -1813590570829849128L;
@@ -44,7 +50,8 @@ public class LoginXServlet extends HttpServlet {
 
         try (Connection connection = ds.getConnection()) {
 
-            // Prepared statements are NOT susceptible to SQL Injection
+            // If implemented correctly, prepared statements are NOT susceptible to SQL Injection
+            // Notice that input validation is still necessary
             PreparedStatement pstmt = connection.prepareStatement(
                     "select * from users where username = ? and password = ? LIMIT 1");
 
@@ -72,28 +79,10 @@ public class LoginXServlet extends HttpServlet {
             return;
         }
 
-        //FIXME: OWASP A2:2017 - Broken Authentication
-        //  Parameter "Remember me" is not observed
-        //  Cookie security settings (httpOnly, secure, age, domain, path, same-site)
-        //  For same-site, see: https://stackoverflow.com/a/43106260/459391
-        //      response.setHeader("Set-Cookie", "key=value; HttpOnly; SameSite=strict")
-
-        //FIXME: OWASP A5:2017 - Broken Access Control
-        //  Cookie used without any signature
-        Cookie uCookie = new Cookie("username", username);
-        response.addCookie(uCookie);
-
-        //FIXME: OWASP A5:2017 - Broken Access Control
-        //  Cookie used without any signature
-        //FIXME: OWASP A3:2017 - Sensitive Data Exposure
-        //  Password stored as plaintext on client-side
-        Cookie pCookie = new Cookie("password", password);
-        response.addCookie(pCookie);
-
-        //FIXME: OWASP A5:2017 - Broken Access Control
-        //  Cookie used without any signature
-        Cookie rCookie = new Cookie("role", role);
-        response.addCookie(rCookie);
+        /*
+        * The rest is the same as LoginServlet.java,
+        * and is omitted for brevity.
+        */
 
         response.sendRedirect("user.jsp");
     }
